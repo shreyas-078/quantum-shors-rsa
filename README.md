@@ -58,7 +58,7 @@ cd quantum-shors-rsa
 You can run the program directly by executing the main script. By default, it attempts to factor the integer 15:
 
 ```bash
-python shors_algorithm.py
+python quantum-shors.py
 ```
 
 To factor a different integer, you can modify the value of `N` in the `if __name__ == "__main__":` section of the code.
