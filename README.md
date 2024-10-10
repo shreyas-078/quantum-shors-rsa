@@ -49,8 +49,8 @@ pip install numpy sympy pennylane
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/shreyas-078/quantum-rsa-demo.git
-cd quantum-rsa-demo
+git clone https://github.com/shreyas-078/quantum-shors-rsa.git
+cd quantum-shors-rsa
 ```
 
 ## Usage
