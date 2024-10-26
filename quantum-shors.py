@@ -6,18 +6,7 @@
 import numpy as np
 import math
 import random
-import sympy
 import pennylane as qml
-
-
-def gen_rsa_key(bits):
-    p = sympy.randprime(2 ** (bits // 2 - 1), 2 ** (bits // 2))
-    q = sympy.randprime(2 ** (bits // 2 - 1), 2 ** (bits // 2))
-    N = p * q
-    phi = (p - 1) * (q - 1)
-    e = 65537  # common exponent
-    d = pow(e, -1, phi)  # modular inverse to calculate private exponent
-    return (e, N), (d, N)
 
 
 def find_coprime(N):
@@ -45,9 +34,9 @@ def inv_qft(wires):
         qml.Hadamard(wires=i)  # Reverse Hadamard transformation
 
 
-def q_find_order(a, N, qubits=8, shots=1024):
+def q_find_order(a, N, qubits=8, shots=512):  # Reduced qubits and shots
     dev = qml.device(
-        "default.qubit", wires=qubits, shots=shots
+        "lightning.qubit", wires=qubits, shots=shots
     )  # Set up the quantum device
 
     a_powers = [pow(a, 2**i, N) for i in range(qubits)]  # Precompute powers of 'a' % N
@@ -82,44 +71,48 @@ def q_find_order(a, N, qubits=8, shots=1024):
 
 
 def shors_algo(N):
-    a = find_coprime(
-        N
-    )  # Choosing a coprime integer a for better chances with quantum method
+    if N % 2 == 0:
+        return [2]  # Early factor detection for even numbers
+
+    a = find_coprime(N)
 
     print(
         f"Attempting to find the order of a = {a} modulo N = {N} using quantum simulation..."
     )
     r = q_find_order(a, N)
 
-    if r is None or r % 2 != 0:  # Quantum method fails
+    if r is None or r % 2 != 0:
         print(
             "Quantum order finding failed. This system is unpredictable due to the current limitations of quantum technology."
         )
-        return []  # Return an empty list for failure
+        return []
 
     # Use the order to determine the factors of N
     x1 = pow(a, r // 2, N)
+    if x1 == N - 1 or x1 == 1:  # Early abort if x1 leads to trivial factorization
+        return []
+
     f1 = math.gcd(x1 - 1, N)
     f2 = math.gcd(x1 + 1, N)
 
     factors = []
     if f1 != 1 and f1 != N:
-        factors.append(f1)  # Include factor if valid
+        factors.append(f1)
     if f2 != 1 and f2 != N:
-        factors.append(f2)  # Include second factor
+        factors.append(f2)
 
     return factors if factors else []
 
 
 # Testing the implementation
 if __name__ == "__main__":
-    N = 15  # Basic composite number for testing
+    N = 27221
     print(f"Attempting to factorize N = {N}")
-    factors = shors_algo(N)
-
-    if factors:
-        print(f"Factors of {N} found: {factors}")
-    else:
+    factors = []
+    while not factors:
+        factors = shors_algo(N)
         print(
             "No factors found. This could be due to the unpredictability of quantum systems."
         )
+    print(f"Factors of {N} found: {factors}")
+

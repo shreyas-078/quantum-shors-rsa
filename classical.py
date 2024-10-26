@@ -12,14 +12,22 @@ def gcd(a, b):
 
 def classical_rsa_break(n):
     start_time = time.time()
-    for i in range(2, n):
+
+    # Loop to find the first divisor of n, starting from 2
+    for i in range(2, int(n**0.5) + 1):  # Only iterate up to sqrt(n) for efficiency
         if n % i == 0:
             p, q = i, n // i
-            break
+            end_time = time.time()
+            return p, q, end_time - start_time  # Return p, q and the duration of the process
+
     end_time = time.time()
-    return p, q, end_time - start_time
+    return None, None, end_time - start_time  # No factors found (for prime n)
 
 
-n = 3233  # RSA modulus
+n = 27221  # RSA modulus
 p, q, duration = classical_rsa_break(n)
-print(f"Classical approach: p = {p}, q = {q}, Time taken = {duration} seconds")
+
+if p and q:
+    print(f"Classical approach: p = {p}, q = {q}, Time taken = {duration:.6f} seconds")
+else:
+    print(f"Failed to factorize {n}. Time taken = {duration:.6f} seconds")
