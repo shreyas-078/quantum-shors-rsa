@@ -3,9 +3,9 @@
 Using the ideas of quantum physics, quantum computing is a novel approach to computing. It is still in the experimental phase, and there are still numerous obstacles to overcome.
 
 1. Unpredictability: Quantum systems are highly unpredictable. They rely on the properties of quantum states which are probabilistic, it might be challenging to consistently produce precise results because the results can differ between runs.
-2. Perfect Qubits: A large number of perfect qubits is required for methods such as Shor's algorithm to successfully crack RSA-2048 encryption. The limitations of current quantum computers include limited qubit counts, decoherence, and high mistake rates. It is estimated that around 4,000 to 20,000 logical qubits could be required for RSA-2048 to be broken.
+2. Perfect Qubits: A large number of perfect qubits is required for methods such as Shor's algorithm to successfully crack RSA-2048 encryption. The limitations of current quantum computers include limited qubit counts, decoherence, and high mistake rates. It is estimated that around 4,000 to 20,000 logical qubits could be required for RSA-2048 to be broken. Hence the current implementation uses a Maximum of RSA-32 as a demonstration.
 3. RSA Security: Due to the limitations of modern quantum computers, RSA-2048 is currently safe from quantum attacks and considered secure against classical assaults. But RSA encryption might be in danger if powerful quantum computers become more accessible.
-4. Time Estimation: RSA-2048 might be factored in a matter of seconds to minutes if we have a sufficiently strong quantum computer with the necessary number of perfect qubits. This is in contrast to the approx. 300trillion years it would take for a classical computer to factorise current RSA standard keys.
+4. Time Estimation: RSA-2048 might be factored in a matter of seconds to minutes if we have a sufficiently strong quantum computer with the necessary number of perfect qubits. This is in contrast to the approx. 300 trillion years it would take for a classical computer to factorise current RSA standard keys.
 
 # Shor's Algorithm for Integer Factorization
 
@@ -58,11 +58,8 @@ cd quantum-shors-rsa
 You can run the program directly by executing the main script. By default, it attempts to factor the integer 15:
 
 ```bash
-python quantum-shors.py
+python quantum-utils.py
 ```
-
-To factor a different integer, you can modify the value of `N` in the `if __name__ == "__main__":` section of the code.
-This may not guarantee the working of the current implementation, since the program is just a demonstration for smaller N values.
 
 ## How It Works
 
